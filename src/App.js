@@ -79,7 +79,7 @@ export const App = () => {
                 <Route exact path="/persons" component={PersonList}></Route>
                 <Route exact path="/persons/:id" component={PersonProfile}></Route>
               </Switch>
-              <Redirect from="/" to="/persons" ></Redirect>
+              {/* <Redirect from="/" to="/persons" ></Redirect> */}
             </Router>
           </Grid>
         </Grid>

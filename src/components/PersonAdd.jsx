@@ -12,7 +12,7 @@ import {
 
 import { useDispatch } from 'react-redux'
 import FileBase64 from 'react-file-base64';
-import { useForm, Controller } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from "@hookform/resolvers/yup";
 import { createPerson } from '../actions/person'
@@ -49,6 +49,7 @@ export const PersonAdd = ({open, handleClose}) => {
 
     const dispatch = useDispatch();
 
+    const [username, setUsername] = useState("");
     const [ file, setFile ] = useState(null);    
     const [qrCode, setQrCode ] = useState(null);
     const { register, handleSubmit, control, errors, reset } = useForm({
@@ -67,10 +68,16 @@ export const PersonAdd = ({open, handleClose}) => {
         
     };
 
+    const setUsernameInfo = (e) => {
+        console.log(e.target.value);
+        setUsername(e.target.value);
+    }
+
     const clearForm = () => {
         reset();
         setFile(null);
         setQrCode(null);
+        setUsername("");
         handleClose();
     };
 
@@ -112,6 +119,7 @@ export const PersonAdd = ({open, handleClose}) => {
                             inputRef={register}
                             error={errors.username ? true : false}
                             fullWidth
+                            onChange={setUsernameInfo}
                         />
                         <TextField
                             id="title"
@@ -147,18 +155,6 @@ export const PersonAdd = ({open, handleClose}) => {
                             error={errors.phoneNumber ? true : false}
                             fullWidth
                         />
-                        {/* <TextField
-                            id="dateofBirth"
-                            label="Birthday"
-                            variant='outlined'
-                            type="date"
-                            className={classes.textField}
-                            defaultValue="1996-03-18"
-                            size='small'
-                            inputRef={register}
-                            error={errors.dateofBirth ? true : false}
-                            fullWidth
-                        /> */}
                         <TextField
                             id="shortSummary"
                             label="Short Summary"
@@ -197,10 +193,10 @@ export const PersonAdd = ({open, handleClose}) => {
                             fullWidth
                         />
                         <Button 
-                            // disabled={errors.username ? true : false}
+                            disabled={qrCode != null || username == ''}
                             variant='outlined' 
                             color="primary"
-                            onClick={() => generateQR(control.getValues().username)}
+                            onClick={() => generateQR(username)}
                             >Generate QR-Code
                         </Button>
                         <br />
